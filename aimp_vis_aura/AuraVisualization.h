@@ -39,14 +39,13 @@ private:
     const short DIM_BACKGROUND = -192;
     const short DIM_CIRCLE = -96;
 
-    // TODO remove
     IAIMPCore* aimpCore;
 
     // Okey, Full HD
     const int MAX_WIDTH = 1920;
     const int MAX_HEIGTH = 1080;
 
-    const float BEATS_THRESOLD = 0.25f; // 40% of MAXCHAR
+    const float BEATS_THRESOLD = 0.25f;
     const short SPECTRUM_ANALYZE_COUNT = 4;
 
     const float CIRCLE_BEATS_FACTOR = 0.15f;
