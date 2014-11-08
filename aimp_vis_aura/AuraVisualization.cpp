@@ -51,7 +51,8 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
 
     graphics.FillRectangle(bgndBrush, 0, 0, visSize.cx, visSize.cy);
 
-    graphics.TranslateTransform(visCenter.x, visCenter.y);
+    graphics.TranslateTransform(static_cast<float>(visCenter.x), 
+                                static_cast<float>(visCenter.y));
 
     // Draw inner circle
     int rad = innerRadius;
@@ -60,13 +61,13 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
         // TODO improve check
         float v = data->Spectrum[2][i] / float(MAXCHAR);
         if (v > BEATS_THRESOLD) {
-            rad = (CIRCLE_SCALE_FACTOR + v * CIRCLE_BEATS_FACTOR) * rad;
+            rad = static_cast<int>((CIRCLE_SCALE_FACTOR + v * CIRCLE_BEATS_FACTOR) * rad);
             break;
         }
     }
     graphics.FillEllipse(circleBrush, -rad, -rad, 2 * rad, 2 * rad);
 
-    float const_var = 2 * M_PI / AIMP_VISUAL_WAVEFORM_MAX;
+    float const_var = static_cast<float>(2 * M_PI / AIMP_VISUAL_WAVEFORM_MAX);
 
     for (float power = 0.5; power < 2.0; power += 0.5) {
         // TODO deal with all this crap
