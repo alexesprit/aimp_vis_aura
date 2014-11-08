@@ -8,6 +8,8 @@
 AuraVisualization::AuraVisualization(IAIMPCore* core) {
     aimpCore = core;
     aimpCore->AddRef();
+
+    visColor = 0xFFFFFFFF;
 }
 
 AuraVisualization::~AuraVisualization() {
@@ -17,7 +19,7 @@ AuraVisualization::~AuraVisualization() {
 
 void WINAPI AuraVisualization::Initialize(int width, int height) {
     Resize(width, height);
-    InitializePaintTools(0xFFFFFFFF);
+    InitializePaintTools();
 }
 
 void WINAPI AuraVisualization::Finalize() {
@@ -71,12 +73,12 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
 
     for (float power = 0.5; power < 2.0; power += 0.5) {
         // TODO deal with all this crap
-        int powerColor = color;
+        int powerColor = visColor;
         if (power == 1.5) {
-            powerColor = TransformColor(color, DIM_MAX_WAVE);
+            powerColor = TransformColor(powerColor, DIM_MAX_WAVE);
         }
         else if (power == 0.5) {
-            powerColor = TransformColor(color, DIM_MIN_WAVE);
+            powerColor = TransformColor(powerColor, DIM_MIN_WAVE);
         }
 
         dotBrush->SetColor(Color(powerColor));
@@ -143,15 +145,14 @@ void WINAPI AuraVisualization::Resize(int newWidth, int newHeight) {
     lineStep = K_LINE_STEP / minDimension;
 }
 
-void AuraVisualization::InitializePaintTools(DWORD color) {
-    this->color = color;
-
-    bgndBrush = new SolidBrush(Color(TransformColor(color, DIM_BACKGROUND)));
-    circleBrush = new SolidBrush(Color(TransformColor(color, DIM_CIRCLE)));
+void AuraVisualization::InitializePaintTools() {
+    bgndBrush = new SolidBrush(Color(TransformColor(visColor, DIM_BACKGROUND)));
+    circleBrush = new SolidBrush(Color(TransformColor(visColor, DIM_CIRCLE)));
 
     // Color is changed dynamically
-    dotBrush = new SolidBrush(Color(color));
-    wavePen = new Pen(Color(color), 1.0f);
+    // Black color is just a stub
+    dotBrush = new SolidBrush(Color::Black);
+    wavePen = new Pen(Color::Black, 1.0f);
 }
 
 DWORD AuraVisualization::TransformColor(DWORD color, short light) {

@@ -23,7 +23,7 @@ public:
 
     void OnColorSchemeChanged(DWORD color);
 private:
-    void InitializePaintTools(DWORD color);
+    void InitializePaintTools();
     void FinalizePaintTools();
    
     DWORD TransformColor(DWORD color, short light);
@@ -33,7 +33,7 @@ private:
     SolidBrush* bgndBrush;
     SolidBrush* circleBrush;
 
-    DWORD color;
+    DWORD visColor;
     const short DIM_MIN_WAVE = -128;
     const short DIM_MAX_WAVE = -64;
     const short DIM_BACKGROUND = -192;
