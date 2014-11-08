@@ -63,6 +63,8 @@ private:
     const USHORT INNER_RADIUS_PERCENT = 20;
     const USHORT WAVE_AMPLITUDE_PERCENT = 20;
 
+    float CONST_VALUE = static_cast<float>(2 * M_PI / AIMP_VISUAL_WAVEFORM_MAX);
+
     SIZE visSize;
     POINT visCenter;
     short outerRadius;

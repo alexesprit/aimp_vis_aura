@@ -51,7 +51,10 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
     Graphics graphics(hdc);
     graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 
-    graphics.FillRectangle(bgndBrush, 0, 0, visSize.cx, visSize.cy);
+    Rect rect(0, 0, visSize.cx, visSize.cy);
+
+    graphics.SetClip(rect);
+    graphics.FillRectangle(bgndBrush, rect);
 
     graphics.TranslateTransform(static_cast<float>(visCenter.x), 
                                 static_cast<float>(visCenter.y));
@@ -68,8 +71,6 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
         }
     }
     graphics.FillEllipse(circleBrush, -rad, -rad, 2 * rad, 2 * rad);
-
-    float const_var = static_cast<float>(2 * M_PI / AIMP_VISUAL_WAVEFORM_MAX);
 
     for (float power = 0.5; power < 2.0; power += 0.5) {
         // TODO deal with all this crap
@@ -92,10 +93,10 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
         for (int i = 0; i < AIMP_VISUAL_WAVEFORM_MAX; i += lineStep) {
             float v = data->WaveForm[0][i] / float(MAXSHORT) * power;
 
-            float x = outerRadius * cos(i * const_var);
-            float y = outerRadius * sin(i * const_var);
-            float x2 = (outerRadius + v * waveAmplitude) * cos(i * const_var);
-            float y2 = (outerRadius + v * waveAmplitude) * sin(i * const_var);
+            float x = outerRadius * cos(i * CONST_VALUE);
+            float y = outerRadius * sin(i * CONST_VALUE);
+            float x2 = (outerRadius + v * waveAmplitude) * cos(i * CONST_VALUE);
+            float y2 = (outerRadius + v * waveAmplitude) * sin(i * CONST_VALUE);
 
             // draw line only one time with power 1.0
             if (power == 1.0) {
@@ -116,11 +117,11 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
             float v1 = data->WaveForm[0][i] / float(MAXSHORT) * power;
             float v2 = data->WaveForm[0][j] / float(MAXSHORT) * power;
 
-            float x1 = (outerRadius + v1 * waveAmplitude)*cos(i * const_var);
-            float y1 = (outerRadius + v1 * waveAmplitude)*sin(i * const_var);
+            float x1 = (outerRadius + v1 * waveAmplitude)*cos(i * CONST_VALUE);
+            float y1 = (outerRadius + v1 * waveAmplitude)*sin(i * CONST_VALUE);
 
-            float x2 = (outerRadius + v2 * waveAmplitude)*cos(j * const_var);
-            float y2 = (outerRadius + v2 * waveAmplitude)*sin(j * const_var);
+            float x2 = (outerRadius + v2 * waveAmplitude)*cos(j * CONST_VALUE);
+            float y2 = (outerRadius + v2 * waveAmplitude)*sin(j * CONST_VALUE);
 
             graphics.DrawLine(wavePen, x1, y1, x2, y2);
         }
