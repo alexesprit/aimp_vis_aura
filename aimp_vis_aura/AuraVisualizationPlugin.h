@@ -3,6 +3,8 @@
 #include "apiPlugin.h"
 #include "IUnknownImpl.h"
 
+#include "AuraVisualization.h"
+
 class AuraVisualizationPlugin : public IUnknownImpl<IAIMPPlugin> {
 public:
     virtual HRESULT WINAPI Initialize(IAIMPCore* core) override;
@@ -15,5 +17,6 @@ public:
 
 private:
     ULONG_PTR gdiplusToken;
+    AuraVisualization* visualization;
 };
 

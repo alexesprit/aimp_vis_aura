@@ -2,6 +2,7 @@
 
 #include "AuraVisualization.h"
 #include "PluginData.h"
+#include "Colors.h"
 
 #define RADIANS(x) ((x) * 180 / M_PI)
 
@@ -9,7 +10,7 @@ AuraVisualization::AuraVisualization(IAIMPCore* core) {
     aimpCore = core;
     aimpCore->AddRef();
 
-    visColor = 0xFFFFFFFF;
+    LoadVisualizationColor();
 }
 
 AuraVisualization::~AuraVisualization() {
@@ -23,6 +24,7 @@ void WINAPI AuraVisualization::Initialize(int width, int height) {
 }
 
 void WINAPI AuraVisualization::Finalize() {
+    SaveVisualizationColor();
     FinalizePaintTools();
 }
 
@@ -38,13 +40,16 @@ HRESULT WINAPI AuraVisualization::GetMaxDisplaySize(int *width, int *height) {
 }
 
 HRESULT WINAPI AuraVisualization::GetName(IAIMPString **out) {
-    aimpCore->CreateObject(IID_IAIMPString, (void**)out);
-    (*out)->SetData(VISUALIZATION_NAME, wcslen(VISUALIZATION_NAME));
+    MakeString(VISUALIZATION_NAME, out);
     return S_OK;
 }
 
 void WINAPI AuraVisualization::Click(int x, int y, int button) {
-    // do nothing
+    currentColorIndex = (currentColorIndex + 1) % MAX_COLORS;
+    visColor = COLOR_PALETTE[currentColorIndex];
+
+    bgndBrush->SetColor(Color(TransformColor(visColor, DIM_BACKGROUND)));
+    circleBrush->SetColor(Color(TransformColor(visColor, DIM_CIRCLE)));
 }
 
 void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
@@ -65,7 +70,7 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
         // Detecting beats
         // TODO improve check
         float v = data->Spectrum[2][i] / float(MAXCHAR);
-        if (v > BEATS_THRESOLD) {
+        if (v > BEATS_THRESHOLD) {
             rad = static_cast<int>((CIRCLE_SCALE_FACTOR + v * CIRCLE_BEATS_FACTOR) * rad);
             break;
         }
@@ -157,6 +162,38 @@ void AuraVisualization::InitializePaintTools() {
     wavePen = new Pen(Color::Black, 1.0f);
 }
 
+void AuraVisualization::FinalizePaintTools() {
+    delete wavePen;
+
+    delete dotBrush;
+    delete bgndBrush;
+    delete circleBrush;
+}
+
+void AuraVisualization::LoadVisualizationColor() {
+    IAIMPServiceConfigPtr configService;
+    if (SUCCEEDED(aimpCore->QueryInterface(IID_IAIMPServiceConfig, (void**)&configService))) {
+        IAIMPStringPtr sKeyString;
+        MakeString(OPTION_COLOR_INDEX, &sKeyString);
+
+        if (FAILED(configService->GetValueAsInt32(sKeyString, &currentColorIndex))) {
+            currentColorIndex = 0;
+        }
+    }
+
+    visColor = COLOR_PALETTE[currentColorIndex];
+}
+
+void AuraVisualization::SaveVisualizationColor() {
+    IAIMPServiceConfigPtr configService;
+    if (SUCCEEDED(aimpCore->QueryInterface(IID_IAIMPServiceConfig, (void**)&configService))) {
+        IAIMPStringPtr sKeyString;
+        MakeString(OPTION_COLOR_INDEX, &sKeyString);
+
+        configService->SetValueAsInt32(sKeyString, currentColorIndex);
+    }
+}
+
 DWORD AuraVisualization::TransformColor(DWORD color, short light) {
     int a = ((color & 0xFF000000) >> 24);
     int r = ((color & 0xFF0000) >> 16) + light;
@@ -170,10 +207,10 @@ DWORD AuraVisualization::TransformColor(DWORD color, short light) {
     return (a << 24) | (r << 16) | (g << 8) | b;
 }
 
-void AuraVisualization::FinalizePaintTools() {
-    delete wavePen;
-
-    delete dotBrush;
-    delete bgndBrush;
-    delete circleBrush;
+HRESULT AuraVisualization::MakeString(PWCHAR strSeq, IAIMPString** out) {
+    auto result = aimpCore->CreateObject(IID_IAIMPString, (void**)out);
+    if (SUCCEEDED(result)) {
+        return (*out)->SetData(strSeq, wcslen(strSeq));
+    }
+    return result;
 }

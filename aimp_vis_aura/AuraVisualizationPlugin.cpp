@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#include "AuraVisualization.h"
 #include "AuraVisualizationPlugin.h"
 #include "PluginData.h"
 
@@ -8,13 +7,17 @@ HRESULT WINAPI AuraVisualizationPlugin::Initialize(IAIMPCore* core) {
     GdiplusStartupInput gdiplusStartupInput;
     GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
-    auto visualization = new AuraVisualization(core);
+    visualization = new AuraVisualization(core);
+    visualization->AddRef();
     core->RegisterExtension(IID_IAIMPServiceVisualizations, visualization);
 
     return S_OK;
 }
 
 HRESULT WINAPI AuraVisualizationPlugin::Finalize() {
+    visualization->Release();
+    visualization = nullptr;
+
     GdiplusShutdown(gdiplusToken);
     return S_OK;
 }

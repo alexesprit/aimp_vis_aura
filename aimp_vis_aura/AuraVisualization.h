@@ -25,8 +25,12 @@ public:
 private:
     void InitializePaintTools();
     void FinalizePaintTools();
+
+    void LoadVisualizationColor();
+    void SaveVisualizationColor();
    
     DWORD TransformColor(DWORD color, short light);
+    HRESULT MakeString(PWCHAR strSeq, IAIMPString** out);
 
     Pen* wavePen;
     SolidBrush* dotBrush;
@@ -34,6 +38,7 @@ private:
     SolidBrush* circleBrush;
 
     DWORD visColor;
+    int currentColorIndex;
     const short DIM_MIN_WAVE = -128;
     const short DIM_MAX_WAVE = -64;
     const short DIM_BACKGROUND = -192;
@@ -45,7 +50,7 @@ private:
     const int MAX_WIDTH = 1920;
     const int MAX_HEIGTH = 1080;
 
-    const float BEATS_THRESOLD = 0.25f;
+    const float BEATS_THRESHOLD = 0.25f;
     const short SPECTRUM_ANALYZE_COUNT = 4;
 
     const float CIRCLE_BEATS_FACTOR = 0.15f;
