@@ -46,11 +46,13 @@ HRESULT WINAPI AuraVisualization::GetName(IAIMPString **out) {
 }
 
 void WINAPI AuraVisualization::Click(int x, int y, int button) {
-    currentColorIndex = (currentColorIndex + 1) % MAX_COLORS;
-    visColor = COLOR_PALETTE[currentColorIndex];
+    if (button == AIMP_VISUAL_CLICK_BUTTON_MIDDLE) {
+        currentColorIndex = (currentColorIndex + 1) % MAX_COLORS;
+        visColor = COLOR_PALETTE[currentColorIndex];
 
-    bgndBrush->SetColor(Color(TransformColor(visColor, DIM_BACKGROUND)));
-    circleBrush->SetColor(Color(TransformColor(visColor, DIM_CIRCLE)));
+        bgndBrush->SetColor(Color(TransformColor(visColor, DIM_BACKGROUND)));
+        circleBrush->SetColor(Color(TransformColor(visColor, DIM_CIRCLE)));
+    }
 }
 
 void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
