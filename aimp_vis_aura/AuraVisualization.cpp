@@ -5,6 +5,7 @@
 #include "Colors.h"
 
 #define RADIANS(x) ((x) * 180 / M_PI)
+#define avg(a,b) (((a) + (b)) / 2)
 
 AuraVisualization::AuraVisualization(IAIMPCore* core) {
     aimpCore = core;
@@ -90,13 +91,14 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
         dotBrush->SetColor(Color(powerColor));
         wavePen->SetColor(Color(powerColor));
 
-        // TODO change to average value of L and R channels
         // TODO think about drawing separate visualizations
         // for L and R channels if screen width is big enough.
 
         // Draw lines around the circle
         for (int i = 0; i < AIMP_VISUAL_WAVEFORM_MAX; i += lineStep) {
-            float v = data->WaveForm[0][i] / float(MAXSHORT) * power;
+            float vL = data->WaveForm[0][i] / float(MAXSHORT) * power;
+            float vR = data->WaveForm[1][i] / float(MAXSHORT) * power;
+            float v = avg(vL, vR);
 
             float x = outerRadius * cos(i * CONST_VALUE);
             float y = outerRadius * sin(i * CONST_VALUE);
@@ -120,8 +122,14 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
                 j = 0;
             }
 
-            float v1 = data->WaveForm[0][i] / float(MAXSHORT) * power;
-            float v2 = data->WaveForm[0][j] / float(MAXSHORT) * power;
+            float v1L = data->WaveForm[0][i] / float(MAXSHORT) * power;
+            float v1R = data->WaveForm[1][i] / float(MAXSHORT) * power;
+
+            float v2L = data->WaveForm[0][j] / float(MAXSHORT) * power;
+            float v2R = data->WaveForm[1][j] / float(MAXSHORT) * power;
+
+            float v1 = avg(v1L, v1R);
+            float v2 = avg(v2L, v2R);
 
             float x1 = (outerRadius + v1 * waveAmplitude)*cos(i * CONST_VALUE);
             float y1 = (outerRadius + v1 * waveAmplitude)*sin(i * CONST_VALUE);
