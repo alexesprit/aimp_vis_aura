@@ -30,6 +30,8 @@ PWCHAR WINAPI AuraVisualizationPlugin::InfoGet(int index) {
             return PLUGIN_AUTHOR;
         case AIMP_PLUGIN_INFO_SHORT_DESCRIPTION:
             return PLUGIN_SHORT_DESC;
+        case AIMP_PLUGIN_INFO_FULL_DESCRIPTION:
+            return PLUGIN_FULL_DESC;
         default:
             return nullptr;
     }
