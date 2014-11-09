@@ -60,15 +60,15 @@ private:
     // step minDimension / k + b
     const short K_LINE_STEP = -100;
     const short K_WAVE_STEP = -200;
-    const short B_LINE_STEP = 12;
-    const short B_WAVE_STEP = 24;
+    const short B_LINE_STEP = 10;
+    const short B_WAVE_STEP = 22;
     short lineStep;
     short waveStep;
 
     // radius = minDimension * percent / 100
-    const USHORT OUTER_RADIUS_PERCENT = 40;
-    const USHORT INNER_RADIUS_PERCENT = 20;
-    const USHORT WAVE_AMPLITUDE_PERCENT = 20;
+    const USHORT OUTER_RADIUS_PERCENT = 35;
+    const USHORT INNER_RADIUS_PERCENT = 15;
+    const USHORT WAVE_AMPLITUDE_PERCENT = 30;
 
     float CONST_VALUE = static_cast<float>(2 * M_PI / AIMP_VISUAL_WAVEFORM_MAX);
 
