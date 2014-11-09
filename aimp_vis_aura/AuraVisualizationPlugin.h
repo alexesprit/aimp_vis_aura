@@ -16,6 +16,8 @@ public:
     virtual void WINAPI SystemNotification(int notifyId, IUnknown* data) override;
 
 private:
+    bool IsServiceAvailable(IUnknown* provider, REFIID serviceIid);
+
     ULONG_PTR gdiplusToken;
     AuraVisualization* visualization;
 };

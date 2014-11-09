@@ -4,6 +4,10 @@
 #include "PluginData.h"
 
 HRESULT WINAPI AuraVisualizationPlugin::Initialize(IAIMPCore* core) {
+    if (!IsServiceAvailable(core, IID_IAIMPServiceVisualizations)) {
+        return E_FAIL;
+    }
+
     GdiplusStartupInput gdiplusStartupInput;
     GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
@@ -43,4 +47,13 @@ DWORD WINAPI AuraVisualizationPlugin::InfoGetCategories() {
 
 void WINAPI AuraVisualizationPlugin::SystemNotification(int notifyId, IUnknown* data) {
 
+}
+
+bool AuraVisualizationPlugin::IsServiceAvailable(IUnknown* provider, REFIID serviceIid) {
+    IUnknown* dummyService;
+    if (SUCCEEDED(provider->QueryInterface(serviceIid, (void**)&dummyService))) {
+        dummyService->Release();
+        return true;
+    }
+    return false;
 }
