@@ -51,7 +51,8 @@ private:
     const int MAX_HEIGTH = 1080;
 
     const float BEATS_THRESHOLD = 0.25f;
-    const short SPECTRUM_ANALYZE_COUNT = 4;
+    const short BEATS_ANALYZE_MIN = 1;
+    const short BEATS_ANALYZE_MAX = 3;
 
     const float CIRCLE_BEATS_FACTOR = 0.15f;
     const float CIRCLE_SCALE_FACTOR = 1.05f;

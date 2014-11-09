@@ -66,7 +66,7 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
 
     // Draw inner circle
     int rad = innerRadius;
-    for (int i = 0; i < SPECTRUM_ANALYZE_COUNT; ++i) {
+    for (int i = BEATS_ANALYZE_MIN; i <= BEATS_ANALYZE_MAX; ++i) {
         // Detecting beats
         // TODO improve check
         float v = data->Spectrum[2][i] / float(MAXCHAR);
