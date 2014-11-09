@@ -111,7 +111,8 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
         for (int i = 0; i < AIMP_VISUAL_WAVEFORM_MAX; i += waveStep) {
             int j = i + waveStep;
             if (j >= AIMP_VISUAL_WAVEFORM_MAX) {
-                j -= AIMP_VISUAL_WAVEFORM_MAX;
+                // j -= AIMP_VISUAL_WAVEFORM_MAX;
+                j = 0;
             }
 
             float v1 = data->WaveForm[0][i] / float(MAXSHORT) * power;
