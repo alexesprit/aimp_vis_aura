@@ -12,5 +12,8 @@ public:
     virtual DWORD WINAPI InfoGetCategories() override;
 
     virtual void WINAPI SystemNotification(int notifyId, IUnknown* data) override;
+
+private:
+    ULONG_PTR gdiplusToken;
 };
 
