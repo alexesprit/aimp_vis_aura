@@ -51,9 +51,11 @@ private:
     const float CIRCLE_BEATS_FACTOR = 0.15f;
     const float CIRCLE_SCALE_FACTOR = 1.05f;
 
-    // step = k / minDimension
-    const short K_LINE_STEP = 2580;
-    const short K_WAVE_STEP = 5160;
+    // step minDimension / k + b
+    const short K_LINE_STEP = -100;
+    const short K_WAVE_STEP = -200;
+    const short B_LINE_STEP = 12;
+    const short B_WAVE_STEP = 24;
     short lineStep;
     short waveStep;
 

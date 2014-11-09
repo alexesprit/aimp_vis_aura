@@ -143,8 +143,8 @@ void WINAPI AuraVisualization::Resize(int newWidth, int newHeight) {
 
     waveAmplitude = minDimension * WAVE_AMPLITUDE_PERCENT / 100;
 
-    waveStep = K_WAVE_STEP / minDimension;
-    lineStep = K_LINE_STEP / minDimension;
+    waveStep = minDimension / K_WAVE_STEP + B_WAVE_STEP;
+    lineStep = minDimension / K_LINE_STEP + B_LINE_STEP;
 }
 
 void AuraVisualization::InitializePaintTools() {
