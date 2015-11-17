@@ -1,8 +1,13 @@
 #pragma once
 
+#include <gdiplus.h>
+#pragma comment (lib,"Gdiplus.lib")
+
 #include "apiCore.h"
 #include "apiVisuals.h"
 #include "IUnknownImpl.h"
+
+using namespace Gdiplus;
 
 class AuraVisualization : 
     public IUnknownImpl<IAIMPExtensionEmbeddedVisualization> {

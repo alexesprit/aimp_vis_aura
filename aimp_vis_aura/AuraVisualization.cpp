@@ -4,7 +4,6 @@
 #include "PluginData.h"
 #include "Colors.h"
 
-#define RADIANS(x) ((x) * 180 / M_PI)
 #define avg(a,b) (((a) + (b)) / 2)
 #define max3(a,b,c) (max((a), (b)), (c))
 

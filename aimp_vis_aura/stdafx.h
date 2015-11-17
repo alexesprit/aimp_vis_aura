@@ -11,15 +11,6 @@
 #define _USE_MATH_DEFINES
 
 #include <windows.h>
-#include <Unknwn.h>
 #include <math.h>
-#include <stdlib.h>
-#include <d2d1.h>
-
-#include <objidl.h>
-#include <gdiplus.h>
-
-using namespace Gdiplus;
-#pragma comment (lib,"Gdiplus.lib")
 
 #include "comtypes.h"
