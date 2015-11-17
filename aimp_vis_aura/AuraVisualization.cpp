@@ -103,8 +103,8 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
 
         // Draw lines around the circle
         for (int i = 0; i < AIMP_VISUAL_WAVEFORM_MAX; i += lineStep) {
-            float vL = data->WaveForm[0][i] / float(MAXSHORT) * power;
-            float vR = data->WaveForm[1][i] / float(MAXSHORT) * power;
+            float vL = data->WaveForm[0][i] * power;
+            float vR = data->WaveForm[1][i] * power;
             float v = avg(vL, vR);
 
             float x = outerRadius * cos(i * CONST_VALUE);
@@ -129,11 +129,11 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
                 j = 0;
             }
 
-            float v1L = data->WaveForm[0][i] / float(MAXSHORT) * power;
-            float v1R = data->WaveForm[1][i] / float(MAXSHORT) * power;
+            float v1L = data->WaveForm[0][i] * power;
+            float v1R = data->WaveForm[1][i] * power;
 
-            float v2L = data->WaveForm[0][j] / float(MAXSHORT) * power;
-            float v2R = data->WaveForm[1][j] / float(MAXSHORT) * power;
+            float v2L = data->WaveForm[0][j] * power;
+            float v2R = data->WaveForm[1][j] * power;
 
             float v1 = avg(v1L, v1R);
             float v2 = avg(v2L, v2R);
