@@ -6,6 +6,7 @@
 
 #define RADIANS(x) ((x) * 180 / M_PI)
 #define avg(a,b) (((a) + (b)) / 2)
+#define max3(a,b,c) (max((a), (b)), (c))
 
 AuraVisualization::AuraVisualization(IAIMPCore* core) {
     aimpCore = core;
@@ -69,15 +70,19 @@ void WINAPI AuraVisualization::Draw(HDC hdc, PAIMPVisualData data) {
 
     // Draw inner circle
     int rad = innerRadius;
-    for (int i = BEATS_ANALYZE_MIN; i <= BEATS_ANALYZE_MAX; ++i) {
+    float beatValue = 0.0f;
+    for (int i = BEAT_ANALYZE_MIN; i <= BEAT_ANALYZE_MAX; ++i) {
         // Detecting beats
         // TODO improve check
-        float v = data->Spectrum[2][i] / float(MAXCHAR);
-        if (v > BEATS_THRESHOLD) {
-            rad = static_cast<int>((CIRCLE_SCALE_FACTOR + v * CIRCLE_BEATS_FACTOR) * rad);
-            break;
-        }
+        float beatValueL = data->Spectrum[0][1];
+        float beatValueR = data->Spectrum[1][1];
+        beatValue = max3(beatValue, beatValueL, beatValueR);
     }
+    if (beatValue > BEAT_VALUE_THRESHOLD) {
+        float scaleFactor = CIRCLE_K_FACTOR * beatValue + CIRCLE_B_FACTOR;
+        rad = static_cast<int>(scaleFactor * rad);
+    }
+
     graphics.FillEllipse(circleBrush, -rad, -rad, 2 * rad, 2 * rad);
 
     for (float power = 0.5; power < 2.0; power += 0.5) {

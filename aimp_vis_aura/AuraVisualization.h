@@ -50,12 +50,12 @@ private:
     const int MAX_WIDTH = 1920;
     const int MAX_HEIGTH = 1080;
 
-    const float BEATS_THRESHOLD = 0.25f;
-    const short BEATS_ANALYZE_MIN = 1;
-    const short BEATS_ANALYZE_MAX = 3;
-
-    const float CIRCLE_BEATS_FACTOR = 0.15f;
-    const float CIRCLE_SCALE_FACTOR = 1.05f;
+    const float BEAT_VALUE_THRESHOLD = 30.0f;
+    const short BEAT_ANALYZE_MIN = 1;
+    const short BEAT_ANALYZE_MAX = 2;
+    // factor = k * x + b
+    const float CIRCLE_K_FACTOR = 0.005f;
+    const float CIRCLE_B_FACTOR = 1.0f;
 
     // step minDimension / k + b
     const short K_LINE_STEP = -100;
